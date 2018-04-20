@@ -69,7 +69,11 @@ public class GuidReferenceDrawer : PropertyDrawer
             float buttonWidth = 55.0f;
             
             guidCompPosition.xMax -= buttonWidth;
-            EditorGUI.LabelField(guidCompPosition, new GUIContent(nameProp.stringValue, "Target GameObject is not currently loaded."));
+
+            bool guiEnabled = GUI.enabled;
+            GUI.enabled = false;
+            EditorGUI.LabelField(guidCompPosition, new GUIContent(nameProp.stringValue, "Target GameObject is not currently loaded."), EditorStyles.objectField);
+            GUI.enabled = guiEnabled;
 
             Rect clearButtonRect = new Rect(guidCompPosition);
             clearButtonRect.xMin = guidCompPosition.xMax;
