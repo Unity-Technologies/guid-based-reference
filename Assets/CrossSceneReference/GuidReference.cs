@@ -58,6 +58,13 @@ public class GuidReference : ISerializationCallbackReceiver
         private set {}
     }
 
+    public GuidReference() { }
+
+    public GuidReference(GuidComponent target)
+    {
+        guid = target.GetGuid();
+    }
+
     private void GuidAdded(GameObject go)
     {
         cachedReference = go;
