@@ -20,6 +20,7 @@ public class LoadScenes : MonoBehaviour
 		foreach( var info in scenes )
         {
             Scene scene = SceneManager.GetSceneByName(info.name);
+            
             if (info.shouldLoad && !scene.isLoaded)
             {
                 SceneManager.LoadScene(info.name, LoadSceneMode.Additive);
