@@ -29,6 +29,16 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
         {
             guid = System.Guid.NewGuid();
             serializedGuid = guid.ToByteArray();
+
+if UNITY_EDITOR
+            // If we are creating a new GUID for a prefab instance of a prefab, but we have somehow lost our prefab connection
+            // force a save of the modified prefab instance properties
+            PrefabType prefabType = PrefabUtility.GetPrefabType(this);
+            if (prefabType == PrefabType.PrefabInstance)
+            {
+                PrefabUtility.RecordPrefabInstancePropertyModifications(this);
+            }
+#endif
         }
         else if (guid == System.Guid.Empty)
         {
