@@ -2,6 +2,7 @@ Library/*
 ProjectSettings/*
 UnityPackageManager/*
 Temp/*
+Build/*
 *.csproj
 *.sln
 .vs/*
