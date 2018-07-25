@@ -15,8 +15,6 @@ public class GuidReferenceDrawer : PropertyDrawer
     GUIContent sceneLabel = new GUIContent("Containing Scene", "The target object is expected in this scene asset.");
     GUIContent clearButtonGUI = new GUIContent("Clear", "Remove Cross Scene Reference");
 
-    bool cached = false;
-
     // add an extra line to display source scene for targets
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
@@ -25,15 +23,10 @@ public class GuidReferenceDrawer : PropertyDrawer
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        // cache off properties, as find can be slow
-        if (!cached)
-        {
-            guidProp = property.FindPropertyRelative("serializedGuid");
-            nameProp = property.FindPropertyRelative("cachedName");
-            sceneProp = property.FindPropertyRelative("cachedScene");
-
-            cached = true;
-        }
+       
+        guidProp = property.FindPropertyRelative("serializedGuid");
+        nameProp = property.FindPropertyRelative("cachedName");
+        sceneProp = property.FindPropertyRelative("cachedScene");
 
         // Using BeginProperty / EndProperty on the parent property means that
         // prefab override logic works on the entire property.
