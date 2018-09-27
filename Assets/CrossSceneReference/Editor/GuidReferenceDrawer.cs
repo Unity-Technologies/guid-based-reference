@@ -95,12 +95,16 @@ public class GuidReferenceDrawer : PropertyDrawer
             string scenePath = component.gameObject.scene.path;
             sceneProp.objectReferenceValue = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
 
-            byteArray = component.GetGuid().ToByteArray();
-            arraySize = guidProp.arraySize;
-            for (int i = 0; i < arraySize; ++i)
+            // only update the GUID Prop if something changed. This fixes multi-edit on GUID References
+            if (component != currentGuidComponent)
             {
-                var byteProp = guidProp.GetArrayElementAtIndex(i);
-                byteProp.intValue = byteArray[i];
+                byteArray = component.GetGuid().ToByteArray();
+                arraySize = guidProp.arraySize;
+                for (int i = 0; i < arraySize; ++i)
+                {
+                    var byteProp = guidProp.GetArrayElementAtIndex(i);
+                    byteProp.intValue = byteArray[i];
+                }
             }
         }
 
