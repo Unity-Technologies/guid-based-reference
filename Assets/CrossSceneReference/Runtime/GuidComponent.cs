@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,6 +27,9 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
         // if our serialized data is invalid, then we are a new object and need a new GUID
         if (serializedGuid == null || serializedGuid.Length != 16)
         {
+#if UNITY_EDITOR
+            Undo.RecordObject(this, "Added GUID");
+#endif
             guid = System.Guid.NewGuid();
             serializedGuid = guid.ToByteArray();
 
