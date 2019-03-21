@@ -31,6 +31,7 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
             serializedGuid = guid.ToByteArray();
 
 #if UNITY_EDITOR
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
             // If we are creating a new GUID for a prefab instance of a prefab, but we have somehow lost our prefab connection
             // force a save of the modified prefab instance properties
             PrefabType prefabType = PrefabUtility.GetPrefabType(this);
@@ -90,7 +91,7 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
         }
     }
 
-    void Awake()
+    void Start()
     {
         CreateGuid();
     }
@@ -109,7 +110,10 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
         else
 #endif
         {
-            CreateGuid();
+            if (!gameObject.scene.IsValid() || gameObject.scene.isLoaded)
+            {
+                CreateGuid();
+            }
         }
     }
 
