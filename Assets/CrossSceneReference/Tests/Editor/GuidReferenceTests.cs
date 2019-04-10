@@ -25,7 +25,12 @@ public class GuidReferenceTests
         prefabPath = "Assets/TemporaryTestGuid.prefab";
 
         guidBase = CreateNewGuid();
+		
+#if UNITY_2018_3_OR_NEWER
 		prefab = PrefabUtility.SaveAsPrefabAsset(guidBase.gameObject, prefabPath);
+#else
+        prefab = PrefabUtility.CreatePrefab(prefabPath, guidBase.gameObject);
+#endif
 
         guidPrefab = prefab.GetComponent<GuidComponent>();
     }
