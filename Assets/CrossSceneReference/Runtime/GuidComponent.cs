@@ -34,7 +34,7 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
             // If we are creating a new GUID for a prefab instance of a prefab, but we have somehow lost our prefab connection
             // force a save of the modified prefab instance properties
 	#if UNITY_2018_3_OR_NEWER
-            if (PrefabUtility.IsPartOfPrefabInstance(this))
+            if (PrefabUtility.IsPartOfNonAssetPrefabInstance(this))
 	#else
             PrefabType prefabType = PrefabUtility.GetPrefabType(this);
             if (prefabType == PrefabType.PrefabInstance)
@@ -70,8 +70,7 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
         // This lets us detect if we are a prefab instance or a prefab asset.
         // A prefab asset cannot contain a GUID since it would then be duplicated when instanced.
 	#if UNITY_2018_3_OR_NEWER
-        PrefabAssetType prefabAssetType = PrefabUtility.GetPrefabAssetType(this);
-		if (prefabAssetType == PrefabAssetType.Regular || prefabAssetType == PrefabAssetType.Model)
+        if (PrefabUtility.IsPartOfPrefabAsset(this))
 	#else
         PrefabType prefabType = PrefabUtility.GetPrefabType(this);
         if (prefabType == PrefabType.Prefab || prefabType == PrefabType.ModelPrefab)
@@ -110,8 +109,7 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
         // similar to on Serialize, but gets called on Copying a Component or Applying a Prefab
         // at a time that lets us detect what we are
 	#if UNITY_2018_3_OR_NEWER
-        PrefabAssetType prefabAssetType = PrefabUtility.GetPrefabAssetType(this);
-		if (prefabAssetType == PrefabAssetType.Regular || prefabAssetType == PrefabAssetType.Model)
+        if (PrefabUtility.IsPartOfPrefabAsset(this) )
 	#else
 		PrefabType prefabType = PrefabUtility.GetPrefabType(this);
         if (prefabType == PrefabType.Prefab || prefabType == PrefabType.ModelPrefab)
