@@ -4,13 +4,15 @@ using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEditor.Experimental.SceneManagement;
 #endif
 
 // This component gives a GameObject a stable, non-replicatable Globally Unique IDentifier.
 // It can be used to reference a specific instance of an object no matter where it is.
 // This can also be used for other systems, such as Save/Load game
 [ExecuteInEditMode, DisallowMultipleComponent]
-public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver 
+public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
 {
     // System guid we use for comparison and generation
     System.Guid guid = System.Guid.Empty;
@@ -20,7 +22,14 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
     [SerializeField]
     private byte[] serializedGuid;
 
-    // When deserializaing or creating this component, we want to either restore our serialized GUID
+
+    public bool IsGuidAssigned()
+    {
+        return guid != System.Guid.Empty;
+    }
+
+
+    // When de-serializing or creating this component, we want to either restore our serialized GUID
     // or create a new one.
     void CreateGuid()
     {
@@ -28,6 +37,11 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
         if (serializedGuid == null || serializedGuid.Length != 16)
         {
 #if UNITY_EDITOR
+            // if in editor, make sure we aren't a prefab of some kind
+            if (IsAssetOnDisk())
+            {
+                return;
+            }
             Undo.RecordObject(this, "Added GUID");
 #endif
             guid = System.Guid.NewGuid();
@@ -61,15 +75,46 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
         }
     }
 
+#if UNITY_EDITOR
+    private bool IsEditingInPrefabMode()
+    {
+        if (EditorUtility.IsPersistent(this))
+        {
+            // if the game object is stored on disk, it is a prefab of some kind, despite not returning true for IsPartOfPrefabAsset =/
+            return true;
+        }
+        else
+        {
+            // If the GameObject is not persistent let's determine which stage we are in first because getting Prefab info depends on it
+            var mainStage = StageUtility.GetMainStageHandle();
+            var currentStage = StageUtility.GetStageHandle(gameObject);
+            if (currentStage != mainStage)
+            {
+                var prefabStage = PrefabStageUtility.GetPrefabStage(gameObject);
+                if (prefabStage != null)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private bool IsAssetOnDisk()
+    {
+        return PrefabUtility.IsPartOfPrefabAsset(this) || IsEditingInPrefabMode();
+    }
+#endif
+
     // We cannot allow a GUID to be saved into a prefab, and we need to convert to byte[]
     public void OnBeforeSerialize()
     {
 #if UNITY_EDITOR
         // This lets us detect if we are a prefab instance or a prefab asset.
         // A prefab asset cannot contain a GUID since it would then be duplicated when instanced.
-        if (PrefabUtility.IsPartOfPrefabAsset(this) )
+        if (IsAssetOnDisk())
         {
-            serializedGuid = new byte[0];
+            serializedGuid = null;
             guid = System.Guid.Empty;
         }
         else
@@ -101,7 +146,7 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
 #if UNITY_EDITOR
         // similar to on Serialize, but gets called on Copying a Component or Applying a Prefab
         // at a time that lets us detect what we are
-        if (PrefabUtility.IsPartOfPrefabAsset(this))
+        if (IsAssetOnDisk())
         {
             serializedGuid = null;
             guid = System.Guid.Empty;
