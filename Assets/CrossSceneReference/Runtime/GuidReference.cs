@@ -89,6 +89,10 @@ public class GuidReference : ISerializationCallbackReceiver
     {
         cachedReference = null;
         isCacheSet = false;
+        if (serializedGuid == null || serializedGuid.Length != 16)
+        {
+            serializedGuid = new byte[16];
+        }
         guid = new System.Guid(serializedGuid);
         addDelegate = GuidAdded;
         removeDelegate = GuidRemoved;
