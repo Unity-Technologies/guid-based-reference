@@ -25,8 +25,7 @@ public class GuidReferenceTests
         prefabPath = "Assets/TemporaryTestGuid.prefab";
 
         guidBase = CreateNewGuid();
-        bool success;
-        prefab = PrefabUtility.SaveAsPrefabAsset(guidBase.gameObject, prefabPath, out success);
+        prefab = PrefabUtility.CreatePrefab(prefabPath, guidBase.gameObject);
 
         guidPrefab = prefab.GetComponent<GuidComponent>();
     }

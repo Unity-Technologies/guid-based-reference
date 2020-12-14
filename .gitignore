@@ -8,4 +8,3 @@ Build/*
 .vs/*
 Logs/Packages-Update.log
 Packages/manifest.json
-.idea

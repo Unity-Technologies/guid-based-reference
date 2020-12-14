@@ -22,7 +22,6 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
     [SerializeField]
     private byte[] serializedGuid;
 
-    private bool _awake;
 
     public bool IsGuidAssigned()
     {
@@ -139,17 +138,11 @@ public class GuidComponent : MonoBehaviour, ISerializationCallbackReceiver
 
     void Awake()
     {
-        _awake = true;
         CreateGuid();
     }
 
     void OnValidate()
     {
-        if (!_awake)
-        {
-            return;
-        }
-
 #if UNITY_EDITOR
         // similar to on Serialize, but gets called on Copying a Component or Applying a Prefab
         // at a time that lets us detect what we are
