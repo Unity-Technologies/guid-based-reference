@@ -10,7 +10,7 @@ using UnityEditor;
 // This always works in Game Objects, so calling code will need to use GetComponent<>
 // or other methods to track down the specific objects need by any given system
 
-// Ideally this would be a struct, but we need the ISerializationCallbackReciever
+// Ideally this would be a struct, but we need the ISerializationCallbackReceiver
 [System.Serializable]
 public class GuidReference : ISerializationCallbackReceiver
 {
