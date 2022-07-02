@@ -1,0 +1,17 @@
+{
+  "name": "com.unity.guid",
+  "displayName": "GUID",
+  "version": "1.0.0",
+  "unity": "2019.4",
+  "description": "A component to give a Globaly Unique IDentifier (GUID) to a Game Object.",
+  "keywords": [
+    "guid"
+  ],
+  "samples": [
+    {
+      "displayName": "Sample",
+      "description": "Load up the LoadFirst scene, and then use the SceneLoader object to load 'LoadSecond'. You should see the CrossSceneReferencer object find the CrossSceneTarget object, and set both of them to start spinning.",
+      "path": "Samples~"
+    }
+  ]
+}

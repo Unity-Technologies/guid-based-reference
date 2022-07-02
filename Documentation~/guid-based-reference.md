@@ -14,5 +14,6 @@ William Armstrong williama@unity3d.com
 3. GuidReference.gameObject will then return the GameObject if it is loaded, otherwise null.
 
 ### Sample
-Look in the Samples folder for example usage. Load up the LoadFirst scene, and then use the SceneLoader object to load 'LoadSecond'.  
+Look in the Samples folder for example usage. Load up the LoadFirst scene, and then use the SceneLoader object to load '
+LoadSecond'.  
 You should see the CrossSceneReferencer object find the CrossSceneTarget object, and set both of them to start spinning.
