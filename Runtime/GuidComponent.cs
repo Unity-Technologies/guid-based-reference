@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEditor.Experimental.SceneManagement;
 #endif
 
 // This component gives a GameObject a stable, non-replicatable Globally Unique IDentifier.
